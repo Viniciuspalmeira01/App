@@ -1,0 +1,53 @@
+import peewee as pw
+import flet as ft
+
+db = pw.SqliteDatabase('Banco de matrículas')
+#valor da mensalidade = 70 
+
+class individuo(pw.Model):
+        nome = pw.CharField()
+        descrição = pw.TextField()
+        idade = pw.IntegerField()
+        class Meta:
+                databse = db
+
+# Classe que define a aplicação com AppBar
+class MyApp:
+    def __init__(self):
+        # Cria o componente de AppBar
+        self.appbar = ft.AppBar(
+            title=ft.Text("Minha AppBar em Flet"),
+            bgcolor=ft.colors.BLUE,
+            center_title=True,
+            actions=[
+                ft.IconButton(ft.icons.SETTINGS, on_click=self.settings_clicked),
+                ft.IconButton(ft.icons.INFO, on_click=self.info_clicked),
+                ft.IconButton(ft.icons.SEARCH, on_click= lambda _ : print('Pesquisa solicitada!.'))
+            ],
+        )
+        
+    # Método que define a lógica do evento de clique no botão de configurações
+    def settings_clicked(self, e) -> None: 
+        print("Configurações clicadas!")
+
+    # Método que define a lógica do evento de clique no botão de informações
+    def info_clicked(self, e) -> None: 
+        print("Informações clicadas!")
+
+    def on_card(self) ->None: 
+         pass
+
+    # Método principal que roda a interface
+    def build(self, page: ft.Page) -> None: 
+        page.title = "Gerenciador de matrículas"
+        page.appbar = self.appbar
+        page.update()
+
+# Função principal que inicia a aplicação
+def main(page: ft.Page):
+    app = MyApp()
+    app.build(page)
+
+# Inicializa a aplicação Flet
+if __name__ == "__main__":
+    ft.app(target=main)
