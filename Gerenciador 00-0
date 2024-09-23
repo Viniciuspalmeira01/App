@@ -16,7 +16,7 @@ class MyApp:
     def __init__(self):
         # Cria o componente de AppBar
         self.appbar = ft.AppBar(
-            title=ft.Text("Minha AppBar em Flet"),
+            title=ft.Text("Gerenciador de matrículas"),
             bgcolor=ft.colors.BLUE,
             center_title=True,
             actions=[
