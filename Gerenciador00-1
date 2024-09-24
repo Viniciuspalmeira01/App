@@ -1,0 +1,95 @@
+import peewee as pw
+import flet as ft
+
+db = pw.SqliteDatabase('Banco de matrículas')
+#valor da mensalidade = 70 
+
+class individuo(pw.Model):
+        nome = pw.CharField()
+        descrição = pw.TextField()
+        idade = pw.IntegerField()
+        data = pw.DateField()
+        class Meta:
+                databse = db
+
+
+# Classe que define a aplicação com AppBar
+class MyApp:
+    def __init__(self):
+        super().__init__()
+        # Cria o componente de AppBar
+        self.appbar = ft.AppBar(
+            title=ft.Text("Página Inicial", font_family='Arial', size = 35),
+            bgcolor=ft.colors.RED,
+            center_title=True,leading_width= 40,
+            actions=[
+                ft.IconButton(ft.icons.SETTINGS, on_click=self.settings_clicked),
+                ft.IconButton(ft.icons.INFO, on_click=self.info_clicked),
+                ft.IconButton(ft.icons.SEARCH, on_click= lambda _ : print('Pesquisa solicitada!.')),
+            ],
+        )
+
+        self.new_task = ft.TextField(hint_text = "Qual o nome?", expand=True)
+        self.tasks_view = ft.Column()
+        self.view = ft.Column(
+             width= 600 , 
+             spacing= 15,
+             scroll=True,
+             expand= True,
+             controls = [
+                  ft.Row(
+                       controls= [ 
+                            self.new_task, 
+                            ft.FloatingActionButton(icon=ft.icons.ADD, on_click=self.add_clicked)
+                       ],
+                  ),self.tasks_view, 
+                  
+             ],
+        )
+
+    def add_clicked(self,e):
+         self.tasks_view.controls.append(ft.Checkbox(label=self.new_task.value))
+         self.new_task.value = ""
+         self.view.update()
+
+
+    def deletar(self, task):
+        self.tasks_view.controls.remove(task)
+        self.view.update()  
+
+
+    # Método que define a lógica do evento de clique no botão de configurações
+    def settings_clicked(self, e) -> None: 
+        print("Configurações clicadas!")
+
+    # Método que define a lógica do evento de clique no botão de informações
+    def info_clicked(self, e) -> None: 
+        row = ft.MenuBar(
+             controls = [
+                  
+             ]
+        )
+        pass
+    def search(self) -> None:
+         
+         pass
+    def on_card(self) ->None:
+          
+         pass
+
+    # Método principal que roda a interface
+    def build(self, page: ft.Page) -> None: 
+        page.title = "Gerenciador de matrículas" 
+        page.appbar = self.appbar
+        page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+        page.add(self.view)
+        page.update()
+
+# Função principal que inicia a aplicação
+def main(page: ft.Page) -> None:
+    app = MyApp()
+    app.build(page)
+
+# Inicializa a aplicação Flet
+if __name__ == "__main__":
+    ft.app(target=main)
